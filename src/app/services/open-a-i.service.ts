@@ -25,7 +25,7 @@ export class OpenAIService {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + String("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")
+        'Authorization': 'Bearer ' + String("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")
       },
       body: JSON.stringify(params_)
     }
