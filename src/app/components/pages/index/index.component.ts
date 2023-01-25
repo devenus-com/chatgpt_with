@@ -12,7 +12,6 @@ import {CryptService} from "../../../services/crypt.service";
 export class IndexComponent implements AfterViewInit, OnInit {
 
   constructor(private scene: SceneService, private ai: OpenAIService) {
-
   }
 
   private recognizer?: any
@@ -37,10 +36,14 @@ export class IndexComponent implements AfterViewInit, OnInit {
       const results = e.results;
       const resultText = results[results.length - 1][0].transcript.trim();
       console.log(resultText);
+      this.scene.toggleMouse();
       this.ai.request({prompt: resultText}).then(async (t) => {
+        this.scene.toggleMouse();
         console.log(t);
         await this.scene.talk(t);
-      });
+      }).catch(
+        (e) => this.scene.talk("エラーがでました(T_T)")
+      );
     }
     this.recognizer.onerror = () => {
       this.prepareRecognition()

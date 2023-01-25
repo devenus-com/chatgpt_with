@@ -17,7 +17,7 @@ export class OpenAIService {
     stop: ["Human:", " AI:"],
   }
 
-  private token!:string
+  private readonly token!:string
 
   constructor(private crypt:CryptService) {
     this.token = crypt.decrypt("U2FsdGVkX19Goi5uXYszH49C0uthbW/Wj0JaJxItcn0ofFytPSGIU7gIlEhK3bLHxK7ainJuPO1NYlz0hKPX9lHy5bG2/SK8fOBgKDA+jg4=");

@@ -153,6 +153,10 @@ export class SceneService {
     }
   }
 
+  toggleMouse() {
+    this.model.morphTargetInfluences![6] = Number(!this.model.morphTargetInfluences![6]);
+  }
+
   private async createMMD() {
     this.model = await this.mmdLoader.loadAsync(
       "assets/model/AppearanceMiku/Appearance_Miku.pmx"
@@ -198,7 +202,7 @@ export class SceneService {
       "ニコID：1525589/Twitter：紅郎@d962\n" +
       "\n" +
       "私室製作：\n" +
-      "@kemilia1010 (Twitter)" +
+      "@kemilia1010 (Twitter)\n" +
       "\n" +
       "PG製作\n" +
       "(C)DEVenus .ltd @m96-chan"
