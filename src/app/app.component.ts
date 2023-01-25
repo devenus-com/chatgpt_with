@@ -5,6 +5,6 @@ import { Component } from '@angular/core';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
-  title = 'chatgpt_with';
+export class AppComponent  {
+  title = 'Chat MMD';
 }

@@ -1,6 +1,7 @@
 import {AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
 import {SceneService} from "../../../services/scene.service";
 import {OpenAIService} from "../../../services/open-a-i.service";
+import {CryptService} from "../../../services/crypt.service";
 
 
 @Component({
@@ -11,6 +12,7 @@ import {OpenAIService} from "../../../services/open-a-i.service";
 export class IndexComponent implements AfterViewInit, OnInit {
 
   constructor(private scene: SceneService, private ai: OpenAIService) {
+
   }
 
   private recognizer?: any
