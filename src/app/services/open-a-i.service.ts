@@ -9,21 +9,22 @@ export class OpenAIService {
 
   private readonly DEFAULT_PARAMS = {
     model: "text-davinci-003",
-    temperature: 0.9,
+    temperature: 0.5,
     max_tokens: 4000,
     top_p: 1.0,
     frequency_penalty: 0.5,
     presence_penalty: 0.0,
-    stop: ["Human:", " AI:"],
+    stop: ["You:"],
   }
 
   private readonly token!:string
 
   constructor(private crypt:CryptService) {
-    this.token = crypt.decrypt("U2FsdGVkX19Goi5uXYszH49C0uthbW/Wj0JaJxItcn0ofFytPSGIU7gIlEhK3bLHxK7ainJuPO1NYlz0hKPX9lHy5bG2/SK8fOBgKDA+jg4=");
+    this.token = crypt.decrypt("U2FsdGVkX19Fi9i1J5ZJz/8P4Nz+oK04OTjfJgRZpWBVGzz/Dt/22ZYLndxBhVyhbCr1PicB8/kCGlXmcm3r7IdCXzimjbd6cYMX/eWAscQ=");
   }
 
   async request(params = {}) {
+    console.log("ai request start...")
     const params_ = {...this.DEFAULT_PARAMS, ...params};
     const requestOptions = {
       method: 'POST',

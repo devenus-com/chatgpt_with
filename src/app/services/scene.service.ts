@@ -8,6 +8,7 @@ import {Font, FontLoader} from "three/examples/jsm/loaders/FontLoader";
 import {randInt} from "three/src/math/MathUtils";
 import {TextGeometry} from "three/examples/jsm/geometries/TextGeometry";
 import {chunk, join} from 'lodash'
+import {VoiceVoxConfig} from "./voice-vox.service";
 
 @Injectable({
   providedIn: 'root'
@@ -20,8 +21,7 @@ export class SceneService {
   private aspectRate!: number;
   private mmdLoader!: MMDLoader;
   private mmdHelper!: MMDAnimationHelper;
-  private mixer?: AnimationMixer;
-  private model!: SkinnedMesh;
+  model!: SkinnedMesh;
   private clock!: Clock;
   private textureLoader!: TextureLoader;
   private controls!: OrbitControls;
@@ -84,6 +84,15 @@ export class SceneService {
     canvas.addEventListener('mouseup', e => {
       this.onMouseUpEvent.emit('off');
     });
+    canvas.addEventListener("touchstart", e => {
+      const objs = this.getMouseObjects(e);
+      if (objs.find(x => x.object.name === "model")) {
+        this.onMouseDownEvent.emit('on');
+      }
+    })
+    canvas.addEventListener("touchend", e => {
+      this.onMouseUpEvent.emit('off');
+    })
   }
 
   private getMouseObjects(e: any) {
@@ -110,15 +119,17 @@ export class SceneService {
     this.fukidashiMesh = await this.createPlate("/assets/plate/output.png");
     this.fukidashiMesh.position.set(-6, 21, 2);
     //this.scene.add(this.fukidashiMesh);
-    this.talk("私をクリックしながら喋りかけてくださいね。");
+    //this.talk("私をクリックしながら喋りかけてくださいね。");
     this.createCopyrightNotice();
   }
 
-  async talk(talk: string) {
+  async talk(talk:string, config?: VoiceVoxConfig) {
     if (!talk){
-      this.model.morphTargetInfluences![0] = 0;
+      // 7番が口止め
+      this.model.morphTargetInfluences![7] = 0;
       return;
     }
+    talk.replace('\n', "");
     // 描画最大が８０文字
     const viewTalk = chunk(talk, 60);
     const viewSplitTalk = chunk(join(viewTalk[0], ""), 15);
@@ -138,7 +149,7 @@ export class SceneService {
     text.position.set(0, 1.0, 0);
     text.rotateZ(-Math.PI / 75);
     const cansel = setInterval(() =>
-      this.model.morphTargetInfluences![0] = Number(!this.model.morphTargetInfluences![0]), 240
+      this.model.morphTargetInfluences![7] = Number(!this.model.morphTargetInfluences![7]), 240
     );
     this.fukidashiMesh.add(text);
     this.scene.add(this.fukidashiMesh);
@@ -149,7 +160,7 @@ export class SceneService {
         const next = talk.replace(join(viewTalk[0], ""), "");
         clearInterval(cansel);
         await this.talk(next);
-      }, 4000))
+      }, 6000))
     }
   }
 
@@ -159,7 +170,7 @@ export class SceneService {
 
   private async createMMD() {
     this.model = await this.mmdLoader.loadAsync(
-      "assets/model/AppearanceMiku/Appearance_Miku.pmx"
+      "assets/model/tsugumi/model/Tsumugi_sEihuku.pmx"
     );
     this.model.name = 'model';
     this.model.castShadow = true;
@@ -169,7 +180,9 @@ export class SceneService {
       this.scene.add(this.model);
     })
     this.model.scale.set(1.1, 1.1, 1.1);
+    this.model.position.set(0, 0, 2.5);
     console.log(this.model);
+    this.model.morphTargetInfluences![0] = 1;
   }
 
   private async createRoom() {

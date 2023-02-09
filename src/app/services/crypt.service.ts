@@ -9,12 +9,11 @@ export class CryptService {
   private key = "psu4e23fhWM9";
   constructor() { }
 
-  encrypt(str:string) {
-    return AES.encrypt(str, this.key);
+  encrypt(str:string): string {
+    return AES.encrypt(str, this.key).toString();
   }
 
   decrypt(str:string) {
-    const dec = AES.decrypt(str, this.key).toString(enc.Utf8);
-    return dec.split("").reverse().join("");
+    return AES.decrypt(str, this.key).toString(enc.Utf8);
   }
 }
