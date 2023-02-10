@@ -205,11 +205,8 @@ export class SceneService {
 
   private createCopyrightNotice() {
     const copyright =
-      "モデリング・セットアップ：ままま\n" +
-      "物理演算・セットアップ：アラン・スミシー\n" +
-      "\n" +
-      "(C)ANGEL Project\n" +
-      "(C)Crypton Future Media, Inc. www.piapro.net" +
+      "春日部つむぎモデル\n" +
+      "https://3d.nicovideo.jp/works/td84779\n" +
       "\n" +
       "ベッドモデル制作：\n" +
       "ニコID：1525589/Twitter：紅郎@d962\n" +
