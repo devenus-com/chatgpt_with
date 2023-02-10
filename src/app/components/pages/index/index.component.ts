@@ -49,7 +49,9 @@ export class IndexComponent implements AfterViewInit, OnInit {
         this.audioElement.nativeElement.src = src;
         await Promise.all([this.audioElement.nativeElement.play(), this.mouseMove(promises)]);
       } catch (e) {
-        await this.talk.talk("エラーがでました。");
+        const [src, promises] = await this.talk.talk("エラーが発生しました。");
+        this.audioElement.nativeElement.src = src;
+        await Promise.all([this.audioElement.nativeElement.play(), this.mouseMove(promises)]);
       }
     }
     this.recognizer.onerror = () => {
