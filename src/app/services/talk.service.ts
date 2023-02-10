@@ -20,10 +20,10 @@ export class TalkService {
     o: 12,
   }
 
-  public async talk(sentence: string): Promise<[string,  (() => Promise<void>)[]]> {
+  public async talk(sentence: string): Promise<[string, (() => Promise<void>)[]]> {
     //console.log(sentence);
     const config = await this.vv.createPlayVoiceConfig(sentence);
-    const morass:any[] = config.accent_phrases.flatMap(x => x.moras);
+    const morass: any[] = config.accent_phrases.flatMap(x => x.moras);
     const promises = [];
     for (const x of morass) {
       promises.push(() => new Promise<void>(resolve => {
@@ -37,6 +37,4 @@ export class TalkService {
     }
     return [await this.vv.createVoiceURL(config), promises];
   }
-
-
 }

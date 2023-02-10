@@ -4,6 +4,7 @@ import {OpenAIService} from "../../../services/open-a-i.service";
 import {VoiceVoxService} from "../../../services/voice-vox.service";
 import {CryptService} from "../../../services/crypt.service";
 import {TalkService} from "../../../services/talk.service";
+import {waitForAsync} from "@angular/core/testing";
 
 
 @Component({
@@ -47,7 +48,7 @@ export class IndexComponent implements AfterViewInit, OnInit {
         const [src, promises] = await this.talk.talk(aiResult);
         this.audioElement.nativeElement.src = src;
         await Promise.all([this.audioElement.nativeElement.play(), this.mouseMove(promises)]);
-      } catch(e) {
+      } catch (e) {
         await this.talk.talk("エラーがでました。");
       }
     }
@@ -57,6 +58,7 @@ export class IndexComponent implements AfterViewInit, OnInit {
   }
 
   private loaded = false;
+
   async ngAfterViewInit(): Promise<void> {
     this.canvas.nativeElement.width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
     this.canvas.nativeElement.height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
@@ -67,11 +69,13 @@ export class IndexComponent implements AfterViewInit, OnInit {
     this.audioElement.nativeElement.autoplay = false;
     const [src, promises] = await this.talk.talk("私をクリックしながら喋りかけてくださいね");
     this.audioElement.nativeElement.src = src;
-    await Promise.all([this.audioElement.nativeElement.play(), this.mouseMove(promises)]);
+    setTimeout(async () =>
+        await Promise.all([this.audioElement.nativeElement.play(), this.mouseMove(promises)])
+      , 5000);
   }
 
-  async mouseMove(promises :(() => Promise<void>)[]): Promise<void>{
-    for (const p of promises ) {
+  async mouseMove(promises: (() => Promise<void>)[]): Promise<void> {
+    for (const p of promises) {
       await p().catch(e => console.log(e));
     }
   }
